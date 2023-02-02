@@ -1,0 +1,27 @@
+[
+  {
+    "model": "levelupapi.game",
+    "pk": 1,
+    "fields": {
+      "game_title": "Cats and Ladders",
+      "type": 1,
+      "creator": 1,
+      "skill_level": 1,
+      "maker": 1,
+      "num_of_players": 2
+    }
+  },
+  {
+    "model": "levelupapi.game",
+    "pk": 2,
+    "fields": {
+      "game_title": "Hungry Hungry Cats",
+      "type": 3,
+      "creator": 1,
+      "skill_level": 1,
+      "maker": 1,
+      "num_of_players": 6
+    }
+  }
+
+]
