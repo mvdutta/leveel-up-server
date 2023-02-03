@@ -27,6 +27,7 @@ class EventView(ViewSet):
         """
         events = Event.objects.all()
 
+        #filtering events by game
         if "game" in request.query_params:
             events = events.filter(game = request.query_params['game'])
         serializer = EventSerializer(events, many=True)
@@ -38,3 +39,4 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'game', 'organizer', 'event_date', 'description')
+
