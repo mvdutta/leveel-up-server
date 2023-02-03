@@ -4,7 +4,15 @@
     "pk": 1,
     "fields": {
       "user": 1,
-      "bio": "Me"
+      "bio": "I have 20 cats and love to play games that are all about cats."
+    } 
+  },
+    {
+    "model": "levelupapi.gamer",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "bio": "I like to play games."
     }
   }
 ]
