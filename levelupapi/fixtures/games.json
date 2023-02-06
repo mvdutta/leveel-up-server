@@ -29,7 +29,7 @@
     "fields": {
       "game_title": "MineCat",
       "type": 3,
-      "creator": 1,
+      "creator": 2,
       "skill_level": "Advanced",
       "maker": "MetaCat Co.",
       "num_of_players": 1
