@@ -53,6 +53,25 @@ class EventView(ViewSet):
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        """Handle PUT requests for an event
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        gamer = Gamer.objects.get(user=request.auth.user)
+        game = Game.objects.get(pk=request.data["game"])
+
+        event = Event.objects.get(pk=pk)
+        event.organizer = gamer
+        event.event_date = request.data["event_date"]
+        event.event_time = request.data["event_time"]
+        event.description = request.data["description"]
+        event.game = game
+        event.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 class OrganizerSerializer(serializers.ModelSerializer):
     """JSON serializer for creator on games"""
     class Meta:
