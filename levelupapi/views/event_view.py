@@ -1,4 +1,5 @@
 """View module for handling requests about events"""
+from rest_framework.decorators import action
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -82,6 +83,25 @@ class EventView(ViewSet):
         event.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+
+    @action(methods=['post'], detail=True)
+    def signup(self, request, pk):
+        """Post request for a user to sign up for an event"""
+
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendee.add(gamer)
+        return Response({'message': 'Gamer added'}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['delete'], detail=True)
+    def leave(self, request, pk):
+        """Delete request for a user to leave for an event"""
+    
+        gamer = Gamer.objects.get(user=request.auth.user)
+        event = Event.objects.get(pk=pk)
+        event.attendee.remove(gamer)
+        return Response({'message': 'Gamer removed'}, status=status.HTTP_204_NO_CONTENT)
+
 class OrganizerSerializer(serializers.ModelSerializer):
     """JSON serializer for creator on games"""
     class Meta:
@@ -94,6 +114,6 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = OrganizerSerializer(many=False)
     class Meta:
         model = Event
-        fields = ('id', 'game', 'organizer', 'event_date', 'event_time', 'description')
+        fields = ('id', 'game', 'organizer', 'event_date', 'event_time', 'description', 'attendee')
         depth = 1
 
