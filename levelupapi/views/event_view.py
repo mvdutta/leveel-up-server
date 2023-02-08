@@ -27,10 +27,17 @@ class EventView(ViewSet):
             Response -- JSON serialized list of events
         """
         events = Event.objects.all()
+        gamer = Gamer.objects.get(user=request.auth.user)
+
+        for event in events:
+            # Check to see if the gamer is in the attendee list on the event
+            event.joined = gamer in event.attendee.all()
 
         #filtering events by game
         if "game" in request.query_params:
             events = events.filter(game = request.query_params['game'])
+        
+
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
@@ -114,6 +121,6 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = OrganizerSerializer(many=False)
     class Meta:
         model = Event
-        fields = ('id', 'game', 'organizer', 'event_date', 'event_time', 'description', 'attendee')
+        fields = ('id', 'game', 'organizer', 'event_date', 'event_time', 'description', 'attendee', 'joined')
         depth = 1
 

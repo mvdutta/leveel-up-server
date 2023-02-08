@@ -10,3 +10,10 @@ class Event(models.Model):
     event_time = models.TimeField(auto_now=False, auto_now_add=False, null=True)
     description = models.CharField(max_length=155)
 
+    @property
+    def joined(self):
+        return self.__joined
+
+    @joined.setter
+    def joined(self, value):
+        self.__joined = value
