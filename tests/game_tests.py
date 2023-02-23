@@ -82,3 +82,62 @@ class GameTests(APITestCase):
         self.assertEqual(json_response["skill_level"], "2")
         self.assertEqual(json_response["num_of_players"], 4)
 
+    def test_change_game(self):
+        """
+        Ensure we can change an existing game.
+        """
+        game = Game()
+        game.type_id = 1
+        game.skill_level = 2
+        game.game_title = "Sorry"
+        game.maker = "Milton Bradley"
+        game.num_of_players = 4
+        game.creator_id = 1
+        game.save()
+
+        # DEFINE NEW PROPERTIES FOR GAME
+        data = {
+            "type": 1,
+            "skill_level": 1,
+            "game_title": "Clue",
+            "maker": "Milton Bradley",
+            "num_of_players": 6,
+            "creator": 1
+        }
+
+        response = self.client.put(f"/games/{game.id}", data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # GET game again to verify changes were made
+        response = self.client.get(f"/games/{game.id}")
+        json_response = json.loads(response.content)
+
+        # Assert that the properties are correct
+        self.assertEqual(json_response["game_title"], "Clue")
+        self.assertEqual(json_response["maker"], "Milton Bradley")
+        self.assertEqual(json_response["skill_level"], "1")
+        self.assertEqual(json_response["num_of_players"], 6)
+        self.assertEqual(json_response["type"]["id"], 1)
+        self.assertEqual(json_response["creator"]["id"], 1)
+
+    def test_delete_game(self):
+        """
+        Ensure we can delete an existing game.
+        """
+        game = Game()
+        game.type_id = 2
+
+        game.skill_level = 2
+        game.game_title = "Sorry"
+        game.maker = "Milton Bradley"
+        game.num_of_players = 4
+        game.creator_id = 1
+        game.save()
+
+        # DELETE the game you just created
+        response = self.client.delete(f"/games/{game.id}")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # GET the game again to verify you get a 404 response
+        response = self.client.get(f"/games/{game.id}")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
