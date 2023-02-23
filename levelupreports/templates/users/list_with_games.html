@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LevelUp Reports</title>
+  </head>
+  <body>
+    <h1>User Games</h1>
+
+    {% for user in usergame_list %}
+        <h2>{{ user.full_name }}</h2>
+        <ol>
+            {% for game in user.games %}
+         </ol>   
+        <h3>Title: {{ game.game_title }}</h3>
+        <ol>       
+            <li>
+                Maker: {{ game.maker }}
+            </li>
+            <li>
+                Skill Level: {{ game.skill_level }}
+            </li>
+            <li>
+                Number Of Players: {{ game.num_of_players }}
+            </li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+  </body>
+</html>
