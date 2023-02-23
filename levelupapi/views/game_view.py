@@ -24,11 +24,13 @@ class GameView(ViewSet):
             Returns:
             Response -- JSON serialized ticket record
         """
-
-        game = Game.objects.get(pk=pk)
-        serialized = GameSerializer(
+        try:
+            game = Game.objects.get(pk=pk)
+        except Game.DoesNotExist:
+            return Response({'message': 'You sent an invalid song ID'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = GameSerializer(
             game, context={'request': request})
-        return Response(serialized.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         """Handle POST operations
