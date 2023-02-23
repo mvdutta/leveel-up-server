@@ -7,7 +7,7 @@ from levelupapi.models import Gamer
 
 
 class GamerView(ViewSet):
-    """Level up game types view"""
+    """Level up gamer view"""
 
     def retrieve(self, request, pk):
         """Handle GET requests for single gamer
